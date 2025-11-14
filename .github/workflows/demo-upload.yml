@@ -1,0 +1,27 @@
+name: "nodejs build action"
+on:
+  push:
+    branches:
+      - master
+jobs:
+  Upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create file
+        run : echo "This is a test file" > /myfiles/testfile.txt
+      - name: Upload file
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-artifact
+          path: /myfiles/testfile.txt
+
+  Download:
+    runs-on: ubuntu-latest
+    needs: Upload
+    steps:
+      - name: Download file
+        uses: actions/download-artifact@v4
+        with:
+          name: test-artifact
+      - name: List files
+        run: ls -lart
